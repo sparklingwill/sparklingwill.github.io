@@ -1,46 +1,33 @@
 import './style.css';
+import { initI18n } from './i18n.js';
+import { startPaintLoop, drawStatic } from './paint-engine.js';
 
-const starsContainer = document.getElementById('stars-container');
+initI18n();
 
-function createStars() {
-  const count = 200;
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-    
-    // Random position
-    const x = Math.random() * 100;
-    const y = Math.random() * 100;
-    
-    // Random size
-    const size = Math.random() * 2 + 1;
-    
-    // Random animation duration
-    const duration = Math.random() * 3 + 2;
-    
-    // Random delay
-    const delay = Math.random() * 5;
-    
-    star.style.left = `${x}%`;
-    star.style.top = `${y}%`;
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.setProperty('--duration', `${duration}s`);
-    star.style.setProperty('--opacity', Math.random());
-    star.style.animationDelay = `${delay}s`;
-    
-    starsContainer.appendChild(star);
+// Reveal sections as they scroll into view.
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
   }
-}
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach((el) => io.observe(el));
 
-createStars();
-
-// Simple smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
+// Hero: paint the generated polaroid from its basic colors, looping.
+const canvas = document.getElementById('paint-canvas');
+const img = new Image();
+img.src = '/img/result-polaroid.jpg';
+img.onload = () => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    drawStatic(canvas, img);
+  } else {
+    startPaintLoop(canvas, img, getComputedStyle(document.body).backgroundColor);
+  }
+};
+img.onerror = () => {
+  // Without the result image there is nothing to paint; leave the empty
+  // polaroid frame (paper-colored canvas) rather than a broken animation.
+  canvas.closest('.polaroid-frame')?.classList.add('canvas-failed');
+};

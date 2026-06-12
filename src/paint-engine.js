@@ -36,7 +36,13 @@ export function startPaintLoop(canvas, img, paper = '#f6f1e7') {
   const offCtx = off.getContext('2d', { willReadFrequently: true });
   offCtx.drawImage(img, 0, 0, W, H);
   const pixels = offCtx.getImageData(0, 0, W, H).data;
-  const palette = dominantColors(pixels);
+  const palette = dominantColors(pixels, 8);
+  // Near-white washes are invisible on paper; prefer the saturated colors.
+  const washPalette = palette.filter((c) => {
+    const [r, g, b] = c.match(/\d+/g).map(Number);
+    return r * 0.299 + g * 0.587 + b * 0.114 < 225;
+  });
+  const washColors = washPalette.length ? washPalette : palette;
 
   const sampleAt = (x, y) => {
     const i = ((y | 0) * W + (x | 0)) * 4;
@@ -48,15 +54,15 @@ export function startPaintLoop(canvas, img, paper = '#f6f1e7') {
       x: Math.random() * W,
       y: Math.random() * H,
       r: (0.25 + Math.random() * 0.3) * W,
-      color: palette[i % palette.length],
+      color: washColors[i % washColors.length],
       t0: (i / WASH_COUNT) * STAGES.wash,
     }));
 
   const drawWash = (wsh) => {
     const grad = ctx.createRadialGradient(wsh.x, wsh.y, 0, wsh.x, wsh.y, wsh.r);
     grad.addColorStop(0, wsh.color);
-    grad.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.globalAlpha = 0.2;
+    grad.addColorStop(1, wsh.color.replace('rgb(', 'rgba(').replace(')', ',0)'));
+    ctx.globalAlpha = 0.5;
     ctx.fillStyle = grad;
     ctx.fillRect(wsh.x - wsh.r, wsh.y - wsh.r, wsh.r * 2, wsh.r * 2);
     ctx.globalAlpha = 1;
