@@ -1,19 +1,26 @@
 # Sparkling Will Website
 
-This is the source code for the Sparkling Will website, hosted at [sparklingwill.github.io](https://sparklingwill.github.io).
+Source for [sparklingwill.com](https://sparklingwill.com) — a bilingual
+(EN/中文) showcase for **Photo Gotcha**, our AI photo app: upload 1–2
+photos, pick a style, pull the crank, get a painted polaroid moment.
+(App source: `../photo`.)
 
 ## Mission
-"We build software to help people learn faster and be nicer."
+"We create cool things to empower people to be more productive and kind."
 
-## Project Structure
-- Built with [Vite](https://vitejs.dev/) (Vanilla JS + CSS).
-- Deploys automatically to GitHub Pages via `.github/workflows/deploy.yml`.
+## Stack
+- [Vite](https://vitejs.dev/) (Vanilla JS + CSS), no runtime dependencies.
+- `src/paint-engine.js` — canvas loop that "paints" the hero polaroid
+  from its dominant colors.
+- `src/i18n.js` — EN/中文 strings + toggle.
+- Deploys to GitHub Pages via `.github/workflows/deploy.yml` on push to main.
 
-## Local Development
-1. Clone the repo.
-2. `npm install`
-3. `npm run dev`
+## Local development
+1. `npm install`
+2. `npm run dev`
+3. `npm test` — i18n key parity + paint-engine unit tests.
 
-## Products Showcased
-- **Read Code**: A web-based code review tool (Source: `../CodeReader`).
-- **AutoHighlight**: A Chrome extension for code search (Source: `../autohighlight`).
+## Demo assets
+`public/img/` is generated from `../photo/r2-assets/templates` by
+`node tools/prepare-assets.mjs` (requires the photo repo checked out as a
+sibling). Re-run if the app's sample/template images change.
