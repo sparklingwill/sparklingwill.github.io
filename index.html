@@ -4,77 +4,134 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sparkling Will - Cool things for good will</title>
+  <title>Photo Gotcha — AI photo moments by Sparkling Will</title>
   <meta name="description"
-    content="Sparkling Will: Creating cool software products for good will. Exploring the galaxy of code." />
+    content="Photo Gotcha turns your photos into painted polaroid moments. Upload one or two photos, pick a style, pull the crank. Coming soon to Google Play." />
   <link rel="canonical" href="https://sparklingwill.com/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sparklingwill.com/" />
-  <meta property="og:title" content="Sparkling Will - Cool things for good will" />
+  <meta property="og:title" content="Photo Gotcha — AI photo moments by Sparkling Will" />
   <meta property="og:description"
-    content="Creating cool software products for good will. Exploring the galaxy of code." />
-  <meta property="og:image" content="https://sparklingwill.com/vite.svg" />
+    content="Upload one or two photos, pick a style, pull the crank — get back a painted polaroid moment. Coming soon to Google Play." />
+  <meta property="og:image" content="https://sparklingwill.com/img/result-polaroid.jpg" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://sparklingwill.com/" />
-  <meta property="twitter:title" content="Sparkling Will - Cool things for good will" />
+  <meta property="twitter:title" content="Photo Gotcha — AI photo moments by Sparkling Will" />
   <meta property="twitter:description"
-    content="Creating cool software products for good will. Exploring the galaxy of code." />
-  <meta property="twitter:image" content="https://sparklingwill.com/vite.svg" />
+    content="Upload one or two photos, pick a style, pull the crank — get back a painted polaroid moment. Coming soon to Google Play." />
+  <meta property="twitter:image" content="https://sparklingwill.com/img/result-polaroid.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;600&family=Montserrat:wght@400;700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap"
     rel="stylesheet">
 </head>
 
 <body>
-  <div id="stars-container"></div>
+  <nav class="topnav">
+    <span class="wordmark">Sparkling Will</span>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">中文</button>
+  </nav>
 
   <header class="hero">
-    <div class="content">
-      <h1>Sparkling Will</h1>
-      <p class="tagline">Cool things for the good</p>
+    <p class="kicker" data-i18n="heroKicker">Sparkling Will presents</p>
+    <h1 class="hero-title">Photo Gotcha</h1>
+    <p class="tagline" data-i18n="heroTagline">Your photos, painted into a moment.</p>
+    <p class="hero-sub" data-i18n="heroSub">Upload a photo or two. Our AI studies their colors, then paints
+      you back a moment worth keeping.</p>
+
+    <div class="hero-stage">
+      <div class="inputs">
+        <figure class="snapshot s1">
+          <img src="/img/input-girl.jpg" alt="Input photo: a portrait" width="420" height="700" />
+        </figure>
+        <figure class="snapshot s2">
+          <img src="/img/input-cat.jpg" alt="Input photo: a cat" width="700" height="700" />
+        </figure>
+        <p class="stage-label" data-i18n="inputsLabel">your photos</p>
+      </div>
+
+      <div class="flow">
+        <span class="flow-arrow" aria-hidden="true">⟶</span>
+        <span class="flow-label" data-i18n="arrowLabel">drawn from their colors</span>
+      </div>
+
+      <figure class="polaroid-frame">
+        <canvas id="paint-canvas" width="600" height="800"
+          aria-label="Animation of the generated polaroid being painted from basic colors"></canvas>
+        <figcaption class="stage-label" data-i18n="resultLabel">painted by Photo Gotcha</figcaption>
+      </figure>
     </div>
+
+    <span class="cta-pill" data-i18n="heroCta">Coming soon to Google Play</span>
   </header>
 
   <main>
-    <section id="mission" class="mission-section">
-      <h2>Our Mission</h2>
-      <p>We create cool things to empower people to be more productive and kind.</p>
+    <section id="how" class="how fade-in">
+      <h2 data-i18n="howTitle">How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="step-mark" aria-hidden="true">①</span>
+          <h3 data-i18n="step1Title">Share a photo</h3>
+          <p data-i18n="step1Body">Pick one or two photos of you — or anyone you love.</p>
+        </div>
+        <div class="step">
+          <span class="step-mark" aria-hidden="true">②</span>
+          <h3 data-i18n="step2Title">Choose a style</h3>
+          <p data-i18n="step2Body">Sixteen styles, from neon nights to vintage film.</p>
+        </div>
+        <div class="step">
+          <span class="step-mark" aria-hidden="true">③</span>
+          <h3 data-i18n="step3Title">Pull the crank</h3>
+          <p data-i18n="step3Body">A polaroid slides out — your moment, painted.</p>
+        </div>
+      </div>
     </section>
 
-    <section id="products" class="products-section">
-      <h2>Innovations</h2>
-      <div class="product-grid">
-        <article class="product-card" id="product-read-code">
-          <div class="card-content">
-            <h3>Read Code</h3>
-            <p>A web-based code review tool designed for seamless exploration and search.</p>
-            <div class="links">
-              <a href="https://read-code.com" target="_blank" class="btn primary">Visit Website</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card" id="product-autohighlight">
-          <div class="card-content">
-            <h3>Auto text highlight, copy & switch to AI assistant</h3>
-            <p>Automatically highlight/copy selected text and switch to AI assistant page.</p>
-            <div class="links">
-              <a href="releases/extension.zip" class="btn primary">Download Extension</a>
-            </div>
-          </div>
-        </article>
+    <section id="styles" class="gallery fade-in">
+      <h2 data-i18n="galleryTitle">Styles</h2>
+      <p class="gallery-sub" data-i18n="gallerySub">16 styles · 40 city backdrops</p>
+      <div class="tpl-grid">
+        <figure class="tpl-card">
+          <img src="/img/tpl-neon.jpg" alt="Neon style example" loading="lazy" />
+          <figcaption data-i18n="tplNeon">Neon</figcaption>
+        </figure>
+        <figure class="tpl-card">
+          <img src="/img/tpl-qipao.jpg" alt="Qipao style example" loading="lazy" />
+          <figcaption data-i18n="tplQipao">Qipao</figcaption>
+        </figure>
+        <figure class="tpl-card">
+          <img src="/img/tpl-vintage.jpg" alt="Vintage style example" loading="lazy" />
+          <figcaption data-i18n="tplVintage">Vintage</figcaption>
+        </figure>
+        <figure class="tpl-card">
+          <img src="/img/tpl-snow.jpg" alt="Snow style example" loading="lazy" />
+          <figcaption data-i18n="tplSnow">Snow</figcaption>
+        </figure>
+        <figure class="tpl-card">
+          <img src="/img/tpl-sunset.jpg" alt="Sunset style example" loading="lazy" />
+          <figcaption data-i18n="tplSunset">Sunset</figcaption>
+        </figure>
+        <figure class="tpl-card">
+          <img src="/img/tpl-forest.jpg" alt="Forest style example" loading="lazy" />
+          <figcaption data-i18n="tplForest">Forest</figcaption>
+        </figure>
       </div>
+    </section>
+
+    <section id="about" class="about fade-in">
+      <h2 data-i18n="aboutTitle">About Sparkling Will</h2>
+      <p data-i18n="aboutBody">We create cool things to empower people to be more productive and kind.</p>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2026 Sparkling Will. All rights reserved.</p>
+    <p data-i18n="footer">© 2026 Sparkling Will. All rights reserved.</p>
   </footer>
 
   <script type="module" src="./src/main.js"></script>
