@@ -12,12 +12,21 @@ const jobs = [
   ['sample_input_girl.png', 'input-girl.jpg', 700],
   ['sample_input_cat.jpeg', 'input-cat.jpg', 700],
   ['polaroid.jpeg', 'result-polaroid.jpg', 1000],
-  ['neon.jpeg', 'tpl-neon.jpg', 800],
-  ['qipao.jpeg', 'tpl-qipao.jpg', 800],
+  // all 14 templates from the app's TEMPLATE_META
+  ['polaroid.jpeg', 'tpl-polaroid.jpg', 800],
+  ['mystic.jpeg', 'tpl-mystic.jpg', 800],
+  ['academy.jpeg', 'tpl-academy.jpg', 800],
   ['vintage.jpeg', 'tpl-vintage.jpg', 800],
-  ['snow.jpeg', 'tpl-snow.jpg', 800],
-  ['sunset.jpeg', 'tpl-sunset.jpg', 800],
+  ['qipao.jpeg', 'tpl-qipao.jpg', 800],
   ['forest.jpeg', 'tpl-forest.jpg', 800],
+  ['sunset.jpeg', 'tpl-sunset.jpg', 800],
+  ['snow.jpeg', 'tpl-snow.jpg', 800],
+  ['neon.jpeg', 'tpl-neon.jpg', 800],
+  ['paparazzi.jpeg', 'tpl-paparazzi.jpg', 800],
+  ['camellia.jpeg', 'tpl-camellia.jpg', 800],
+  ['tomato.jpeg', 'tpl-tomato.jpg', 800],
+  ['mohair.jpeg', 'tpl-mohair.jpg', 800],
+  ['casual.jpeg', 'tpl-casual.jpg', 800],
 ];
 
 for (const [src, out, size] of jobs) {
