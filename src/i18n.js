@@ -34,6 +34,7 @@ export const strings = {
     aboutTitle: 'About Sparklingwill',
     aboutBody: 'Curate the beauty of simplicity.',
     footer: '© 2026 Sparklingwill. All rights reserved.',
+    privacy: 'Privacy Policy',
   },
   zh: {
     heroKicker: 'Sparklingwill 出品',
@@ -69,6 +70,7 @@ export const strings = {
     aboutTitle: '关于 Sparklingwill',
     aboutBody: '采撷简约之美。',
     footer: '© 2026 Sparklingwill 版权所有',
+    privacy: '隐私政策',
   },
 };
 
