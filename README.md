@@ -1,4 +1,4 @@
-# Sparkling Will Website
+# Sparklingwill Website
 
 Source for [sparklingwill.com](https://sparklingwill.com) — a bilingual
 (EN/中文) showcase for **Photo Gotcha**, our AI photo app: upload 1–2

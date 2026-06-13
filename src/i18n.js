@@ -1,7 +1,7 @@
 // All visible page copy, both languages. Keys map to data-i18n attributes.
 export const strings = {
   en: {
-    heroKicker: 'Sparkling Will presents',
+    heroKicker: 'Sparklingwill presents',
     heroTagline: 'Your photos, painted into a moment.',
     heroSub: 'Upload a photo or two. Our AI studies their colors, then paints you back a moment worth keeping.',
     heroCta: 'Coming soon to Google Play',
@@ -31,12 +31,12 @@ export const strings = {
     tplTomato: 'Tomato',
     tplMohair: 'Mohair',
     tplCasual: 'Casual',
-    aboutTitle: 'About Sparkling Will',
+    aboutTitle: 'About Sparklingwill',
     aboutBody: 'Curate the beauty of simplicity.',
-    footer: '© 2026 Sparkling Will. All rights reserved.',
+    footer: '© 2026 Sparklingwill. All rights reserved.',
   },
   zh: {
-    heroKicker: 'Sparkling Will 出品',
+    heroKicker: 'Sparklingwill 出品',
     heroTagline: '一拍，一世界。',
     heroSub: '上传一两张照片，AI 读懂它们的色彩，为你绘出值得珍藏的一刻。',
     heroCta: '即将登陆 Google Play',
@@ -66,9 +66,9 @@ export const strings = {
     tplTomato: '番茄',
     tplMohair: '马海毛',
     tplCasual: '随拍',
-    aboutTitle: '关于 Sparkling Will',
+    aboutTitle: '关于 Sparklingwill',
     aboutBody: '采撷简约之美。',
-    footer: '© 2026 Sparkling Will 版权所有',
+    footer: '© 2026 Sparklingwill 版权所有',
   },
 };
 
