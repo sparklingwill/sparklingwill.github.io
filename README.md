@@ -6,7 +6,7 @@ photos, pick a style, pull the crank, get a painted polaroid moment.
 (App source: `../photo`.)
 
 ## Mission
-"We create cool things to empower people to be more productive and kind."
+"Curate the beauty of simplicity."
 
 ## Stack
 - [Vite](https://vitejs.dev/) (Vanilla JS + CSS), no runtime dependencies.

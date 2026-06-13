@@ -32,7 +32,7 @@ export const strings = {
     tplMohair: 'Mohair',
     tplCasual: 'Casual',
     aboutTitle: 'About Sparkling Will',
-    aboutBody: 'We create cool things to empower people to be more productive and kind.',
+    aboutBody: 'Curate the beauty of simplicity.',
     footer: '© 2026 Sparkling Will. All rights reserved.',
   },
   zh: {
@@ -67,7 +67,7 @@ export const strings = {
     tplMohair: '马海毛',
     tplCasual: '随拍',
     aboutTitle: '关于 Sparkling Will',
-    aboutBody: '我们创造美好的事物，让人们更高效、更友善。',
+    aboutBody: '采撷简约之美。',
     footer: '© 2026 Sparkling Will 版权所有',
   },
 };
