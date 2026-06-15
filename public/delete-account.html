@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delete Your Account &amp; Data — Photo Gotcha by Sparklingwill</title>
+  <meta name="description"
+    content="Request deletion of your Photo Gotcha account and associated data, or deletion of specific data without closing your account." />
+  <link rel="canonical" href="https://sparklingwill.com/delete-account.html" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #2a2622;
+      --muted: #6b645c;
+      --rule: #e6e0d8;
+      --bg: #faf7f2;
+      --accent: #8a6d3b;
+      --field: #fffdf9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      font-size: 19px;
+      line-height: 1.65;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px 24px 0;
+    }
+
+    .wordmark {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 20px;
+    }
+
+    .home-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .home-link:hover { text-decoration: underline; }
+
+    h1 {
+      font-weight: 600;
+      font-size: 40px;
+      margin: 12px 0 4px;
+    }
+
+    .updated {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 0 0 32px;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 26px;
+      margin: 40px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    p, li { color: var(--ink); }
+
+    a { color: var(--accent); }
+
+    ul, ol { padding-left: 22px; }
+
+    li { margin: 6px 0; }
+
+    .lead {
+      font-size: 21px;
+      color: var(--muted);
+    }
+
+    code, .mono {
+      font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.82em;
+      background: #efe9e0;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .steps li { margin: 10px 0; }
+
+    /* form */
+    form {
+      margin: 18px 0 8px;
+    }
+
+    fieldset {
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 0 0 20px;
+      background: var(--field);
+    }
+
+    legend {
+      font-weight: 600;
+      font-size: 20px;
+      padding: 0 8px;
+    }
+
+    label { display: block; margin: 0 0 6px; }
+
+    .field { margin: 0 0 18px; }
+
+    .choice {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+
+    .choice input { margin-top: 8px; }
+
+    .choice span { display: block; }
+
+    .choice .hint { color: var(--muted); font-size: 16px; }
+
+    input[type="email"],
+    textarea {
+      width: 100%;
+      font-family: inherit;
+      font-size: 18px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid #d8d0c5;
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    input[type="email"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(138, 109, 59, 0.18);
+    }
+
+    textarea { min-height: 96px; resize: vertical; }
+
+    .req { color: #a33; }
+
+    button {
+      font-family: inherit;
+      font-size: 19px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 26px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #75592f; }
+
+    .form-note {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 12px 0 0;
+    }
+
+    .form-status {
+      font-size: 17px;
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      background: #f0ece3;
+      border-radius: 6px;
+    }
+
+    .error {
+      color: #a33;
+      font-size: 16px;
+      margin: 8px 0 0;
+      min-height: 1.2em;
+    }
+
+    footer {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="topnav">
+    <span class="wordmark">Sparklingwill</span>
+    <a class="home-link" href="/">&larr; Back to site</a>
+  </nav>
+
+  <main class="wrap">
+    <h1>Delete Your Account &amp; Data</h1>
+    <p class="updated">Last updated: June 15, 2026</p>
+
+    <p class="lead">
+      This page lets you request deletion of your account and associated data
+      for <strong>Photo Gotcha</strong>, the mobile app operated by
+      <strong>Sparklingwill LLC</strong>. You can also request deletion of
+      specific data without closing your account.
+    </p>
+
+    <h2>How to request deletion</h2>
+    <ol class="steps">
+      <li>Fill in the form below with the email address tied to your Photo
+        Gotcha account.</li>
+      <li>Choose whether you want to delete your <strong>entire account</strong>
+        or only <strong>specific data</strong>.</li>
+      <li>Press <strong>Submit request</strong>. Your email app opens with a
+        pre-filled message addressed to
+        <a href="mailto:help@sparklingwill.com">help@sparklingwill.com</a> —
+        send it to complete your request.</li>
+      <li>We confirm your identity (that you control the account email) and
+        process your request within <strong>30 days</strong>, then email you to
+        confirm completion.</li>
+    </ol>
+    <p>
+      Prefer to email us directly? Send your request to
+      <a href="mailto:help@sparklingwill.com?subject=Account%20and%20data%20deletion%20request%20(Photo%20Gotcha)">help@sparklingwill.com</a>
+      and include your account email and what you would like deleted.
+    </p>
+
+    <h2>Request deletion</h2>
+    <form id="delete-form" novalidate>
+      <fieldset>
+        <legend>Your request</legend>
+
+        <div class="field">
+          <label for="account-email">Account email <span class="req">*</span></label>
+          <input type="email" id="account-email" name="account-email"
+            autocomplete="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="field">
+          <label>What would you like to delete? <span class="req">*</span></label>
+
+          <label class="choice">
+            <input type="radio" name="request-type" value="full" checked />
+            <span>
+              <strong>Delete my account and all associated data</strong>
+              <span class="hint">Closes your Photo Gotcha account and removes
+                the data described below.</span>
+            </span>
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="request-type" value="partial" />
+            <span>
+              <strong>Delete specific data, but keep my account</strong>
+              <span class="hint">Tell us below which data to delete. Your
+                account stays active.</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label for="details">Details (which data to delete, or anything else
+            we should know)</label>
+          <textarea id="details" name="details"
+            placeholder="e.g. delete my generation history but keep my account"></textarea>
+        </div>
+
+        <button type="submit">Submit request</button>
+        <p class="error" id="form-error" role="alert" aria-live="polite"></p>
+        <p class="form-status" id="form-status" role="status" aria-live="polite" hidden>
+          Your request email is ready. If your email app didn't open,
+          <a id="mailto-link" href="#">click here to send it</a>, or copy the
+          message to <a href="mailto:help@sparklingwill.com">help@sparklingwill.com</a>.
+        </p>
+        <p class="form-note">
+          Submitting opens your email app with a pre-filled message to
+          help@sparklingwill.com.
+        </p>
+      </fieldset>
+    </form>
+
+    <h2>What is deleted, and what we keep</h2>
+    <p>When you ask us to <strong>delete your account</strong>, we delete:</p>
+    <ul>
+      <li><strong>Account information</strong> — your email address, and the
+        display name and profile picture received from Google Sign-In if you
+        used it; and your securely hashed password if you registered with one.</li>
+      <li><strong>Credit balance</strong> and your generation history and usage
+        records (the styles you selected and request timestamps).</li>
+      <li><strong>Uploaded photos and generated images.</strong> These are
+        already deleted automatically within <strong>7 days</strong> of
+        creation, so in most cases none remain by the time we process your
+        request.</li>
+    </ul>
+
+    <p>If you request <strong>partial deletion</strong>, we delete only the data
+      you specify and leave your account active.</p>
+
+    <p>Some data may be <strong>kept</strong> after deletion where the law
+      requires it or for legitimate operational reasons:</p>
+    <ul>
+      <li><strong>Purchase records</strong> (product, transaction identifier,
+        and status) may be retained as required for accounting, tax, and legal
+        compliance. Payment card details are never collected or stored by us.</li>
+      <li><strong>Safety-flagged content.</strong> Our AI processing provider
+        (BytePlus) may retain content flagged by automated safety filters for a
+        limited period (up to <strong>180 days</strong>) as required for safety
+        and legal compliance. This is outside our control.</li>
+      <li><strong>Backups and logs.</strong> Residual copies may persist in
+        routine backups for a short period before being overwritten on our
+        normal cycle.</li>
+    </ul>
+
+    <p>For full details on how we handle your data, see our
+      <a href="/privacy.html">Privacy Policy</a>.</p>
+  </main>
+
+  <footer>
+    &copy; 2026 Sparklingwill LLC. All rights reserved.
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('delete-form');
+      var errorEl = document.getElementById('form-error');
+      var statusEl = document.getElementById('form-status');
+      var mailtoLink = document.getElementById('mailto-link');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errorEl.textContent = '';
+        statusEl.hidden = true;
+
+        var email = form['account-email'].value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          errorEl.textContent = 'Please enter the email address tied to your account.';
+          form['account-email'].focus();
+          return;
+        }
+
+        var type = form.querySelector('input[name="request-type"]:checked').value;
+        var details = form['details'].value.trim();
+
+        var typeLabel = type === 'full'
+          ? 'Delete my account and all associated data'
+          : 'Delete specific data, but keep my account';
+
+        var subject = type === 'full'
+          ? 'Account and data deletion request (Photo Gotcha)'
+          : 'Data deletion request (Photo Gotcha)';
+
+        var bodyLines = [
+          'Hello Sparklingwill team,',
+          '',
+          'I would like to request the following for my Photo Gotcha account:',
+          '',
+          'Request type: ' + typeLabel,
+          'Account email: ' + email,
+          'Details: ' + (details || '(none provided)'),
+          '',
+          'I confirm I am the owner of this account.',
+          '',
+          'Thank you.'
+        ];
+
+        var mailto = 'mailto:help@sparklingwill.com'
+          + '?subject=' + encodeURIComponent(subject)
+          + '&body=' + encodeURIComponent(bodyLines.join('\r\n'));
+
+        mailtoLink.href = mailto;
+        statusEl.hidden = false;
+        window.location.href = mailto;
+      });
+    })();
+  </script>
+</body>
+
+</html>

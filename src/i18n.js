@@ -35,6 +35,7 @@ export const strings = {
     aboutBody: 'Curate the beauty of simplicity.',
     footer: '© 2026 Sparklingwill. All rights reserved.',
     privacy: 'Privacy Policy',
+    deleteAccount: 'Delete account & data',
   },
   zh: {
     heroKicker: 'Sparklingwill 出品',
@@ -71,6 +72,7 @@ export const strings = {
     aboutBody: '采撷简约之美。',
     footer: '© 2026 Sparklingwill 版权所有',
     privacy: '隐私政策',
+    deleteAccount: '删除账号与数据',
   },
 };
 
