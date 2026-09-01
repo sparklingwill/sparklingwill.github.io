@@ -3,7 +3,16 @@
 // viewer watches the result get "drawn" from its basic colors.
 
 const STAGES = { wash: 2500, coarse: 3500, fine: 4000, resolve: 2000, hold: 3000, wipe: 700 };
+// Playback rate for the whole cycle. Every stage shortens by this factor and
+// the dabs laid per frame rise by it, so the canvas still gathers the same
+// amount of paint before it resolves — just faster.
+const SPEED = 1.5;
+const DUR = Object.fromEntries(
+  Object.entries(STAGES).map(([stage, ms]) => [stage, ms / SPEED]),
+);
 const WASH_COUNT = 16;
+const COARSE_DABS = Math.round(12 * SPEED);
+const FINE_DABS = Math.round(40 * SPEED);
 
 // Pure: pixel buffer (RGBA) -> up to `count` dominant colors, most common
 // first. Samples every 16th pixel into coarse 8-level-per-channel buckets.
@@ -27,7 +36,9 @@ export function drawStatic(canvas, img) {
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 }
 
-export function startPaintLoop(canvas, img, paper = '#f6f1e7') {
+// Returns a controller so the page can offer a pause/play affordance: the
+// loop runs indefinitely, which viewers must be able to stop (WCAG 2.2.2).
+export function startPaintLoop(canvas, img, paper = '#f6f1e7', { autoplay = true } = {}) {
   const W = canvas.width, H = canvas.height;
   const ctx = canvas.getContext('2d');
 
@@ -55,7 +66,7 @@ export function startPaintLoop(canvas, img, paper = '#f6f1e7') {
       y: Math.random() * H,
       r: (0.25 + Math.random() * 0.3) * W,
       color: washColors[i % washColors.length],
-      t0: (i / WASH_COUNT) * STAGES.wash,
+      t0: (i / WASH_COUNT) * DUR.wash,
     }));
 
   const drawWash = (wsh) => {
@@ -86,47 +97,77 @@ export function startPaintLoop(canvas, img, paper = '#f6f1e7') {
     ctx.globalAlpha = 1;
   };
 
-  const tWash = STAGES.wash;
-  const tCoarse = tWash + STAGES.coarse;
-  const tFine = tCoarse + STAGES.fine;
-  const tResolve = tFine + STAGES.resolve;
-  const tHold = tResolve + STAGES.hold;
-  const tEnd = tHold + STAGES.wipe;
+  const tWash = DUR.wash;
+  const tCoarse = tWash + DUR.coarse;
+  const tFine = tCoarse + DUR.fine;
+  const tResolve = tFine + DUR.resolve;
+  const tHold = tResolve + DUR.hold;
+  const tEnd = tHold + DUR.wipe;
 
-  let start = performance.now();
   let washes = makeWashes();
   let washIdx = 0;
+  // Elapsed time is tracked as `offset` (banked across pauses) plus the time
+  // since `startedAt`, so pausing freezes the cycle instead of skipping ahead.
+  let offset = 0;
+  let startedAt = 0;
+  let rafId = null;
 
-  ctx.fillStyle = paper;
-  ctx.fillRect(0, 0, W, H);
+  const rewind = () => {
+    offset = 0;
+    washes = makeWashes();
+    washIdx = 0;
+    ctx.fillStyle = paper;
+    ctx.fillRect(0, 0, W, H);
+  };
+
+  rewind();
 
   function frame(now) {
-    let t = now - start;
+    let t = offset + (now - startedAt);
     if (t >= tEnd) {
-      start = now;
+      startedAt = now;
       t = 0;
-      washes = makeWashes();
-      washIdx = 0;
-      ctx.fillStyle = paper;
-      ctx.fillRect(0, 0, W, H);
+      rewind();
     }
     if (t < tWash) {
       while (washIdx < washes.length && washes[washIdx].t0 <= t) drawWash(washes[washIdx++]);
     } else if (t < tCoarse) {
-      drawDabs(12, 24, 46, 0.45);
+      drawDabs(COARSE_DABS, 24, 46, 0.45);
     } else if (t < tFine) {
-      drawDabs(40, 5, 12, 0.8);
+      drawDabs(FINE_DABS, 5, 12, 0.8);
     } else if (t < tResolve) {
-      ctx.globalAlpha = Math.min(1, (t - tFine) / STAGES.resolve);
+      ctx.globalAlpha = Math.min(1, (t - tFine) / DUR.resolve);
       ctx.drawImage(off, 0, 0);
       ctx.globalAlpha = 1;
     } else if (t >= tHold) {
-      ctx.globalAlpha = Math.min(1, (t - tHold) / STAGES.wipe);
+      ctx.globalAlpha = Math.min(1, (t - tHold) / DUR.wipe);
       ctx.fillStyle = paper;
       ctx.fillRect(0, 0, W, H);
       ctx.globalAlpha = 1;
     }
-    requestAnimationFrame(frame);
+    rafId = requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+
+  const controller = {
+    get running() {
+      return rafId !== null;
+    },
+    play() {
+      if (rafId !== null) return;
+      // At the top of a cycle the canvas may hold a static frame; clear it so
+      // the washes are laid over paper rather than the finished photo.
+      if (offset === 0) rewind();
+      startedAt = performance.now();
+      rafId = requestAnimationFrame(frame);
+    },
+    pause() {
+      if (rafId === null) return;
+      offset += performance.now() - startedAt;
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    },
+  };
+
+  if (autoplay) controller.play();
+  return controller;
 }

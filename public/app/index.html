@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Gotcha</title>
+  <meta name="description" content="Upload a photo, pick a style, pull the crank — AI polaroid moments in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
+  <script type="module" crossorigin src="/app/assets/index-ClkhcCxl.js"></script>
+  <link rel="stylesheet" crossorigin href="/app/assets/index-hmsirJh6.css">
+</head>
+<body>
+  <nav class="topnav">
+    <a class="wordmark" href="/" data-i18n="app.backToSite">sparklingwill.com</a>
+    <div class="nav-actions">
+      <button id="credit-pill" class="pill" hidden>…</button>
+      <button id="history-btn" class="pill" data-i18n="history.btn" hidden>History</button>
+      <button id="account-btn" class="pill" data-i18n="account.btn" hidden>Account</button>
+      <button id="lang-toggle" class="pill" aria-label="Switch language">中文</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Sign-in gate -->
+    <section id="gate" hidden>
+      <h1 data-i18n="app.title">Photo Gotcha</h1>
+      <p class="tagline" data-i18n="app.tagline"></p>
+      <p class="lead" data-i18n="auth.lead"></p>
+      <div id="google-btn" class="signin-btn"></div>
+      <button id="apple-btn" class="apple-btn" hidden>
+        <span aria-hidden="true"></span><span data-i18n="auth.continueApple"></span>
+      </button>
+      <input id="referral-input" class="text-input" data-i18n-placeholder="auth.referralPlaceholder"
+             autocomplete="off" autocapitalize="characters" maxlength="12" />
+      <p id="gate-error" class="error" hidden></p>
+      <p class="legal">
+        <span data-i18n="auth.legalPrefix"></span>
+        <a id="legal-terms" target="_blank" rel="noopener" data-i18n="auth.terms"></a>
+        <span data-i18n="auth.legalAnd"></span>
+        <a id="legal-privacy" target="_blank" rel="noopener" data-i18n="auth.privacy"></a>
+      </p>
+    </section>
+
+    <!-- The machine -->
+    <section id="app" hidden>
+      <div id="boot-error" class="banner error-banner" hidden>
+        <span id="boot-error-msg"></span>
+        <button id="boot-retry" class="pill" data-i18n="templates.retry"></button>
+      </div>
+
+      <!-- Style -->
+      <div class="block">
+        <div class="block-label"><span data-i18n="templates.label"></span></div>
+        <div class="template-row">
+          <button id="template-card" class="template-card">
+            <img id="template-preview" alt="" />
+            <span class="template-meta">
+              <strong id="template-name"></strong>
+              <small id="template-desc"></small>
+            </span>
+          </button>
+          <button id="dice-btn" class="pill" title="Random style">🎲</button>
+        </div>
+      </div>
+
+      <!-- Reference photos -->
+      <div class="block">
+        <div class="block-label"><span data-i18n="input.tray"></span></div>
+        <div id="slots" class="slots"></div>
+        <a id="sample-link" class="hint-link" target="_blank" rel="noopener" data-i18n="input.sampleLink" hidden></a>
+      </div>
+
+      <!-- Slogan -->
+      <div class="block" id="slogan-block" hidden>
+        <div class="block-label"><span data-i18n="slogan.placeholder"></span></div>
+        <input id="slogan-input" class="text-input" data-i18n-placeholder="slogan.placeholder" />
+        <small id="slogan-hint" class="soft"></small>
+      </div>
+
+      <!-- Counts -->
+      <div class="block counts">
+        <label class="count">
+          <span class="block-label" data-i18n="count.imagesLabel"></span>
+          <select id="images-select"></select>
+        </label>
+        <label class="count" id="photos-count" hidden>
+          <span class="block-label" data-i18n="count.photosLabel"></span>
+          <select id="photos-select"></select>
+        </label>
+      </div>
+
+      <!-- Crank -->
+      <div class="block">
+        <button id="crank-btn" class="crank"><span data-i18n="gen.crank"></span><small id="cost-label"></small></button>
+        <div id="out-of-credits" class="banner" hidden>
+          <span data-i18n="credits.outOf"></span>
+          <button id="get-credits-btn" class="pill" data-i18n="store.title"></button>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div id="progress" class="block progress" hidden>
+        <p id="progress-msg" data-i18n="gen.generating"></p>
+        <p id="progress-sub" class="soft"></p>
+        <button id="cancel-btn" class="pill" data-i18n="gen.cancel"></button>
+      </div>
+      <div id="status-banner" class="banner" hidden></div>
+
+      <!-- Output -->
+      <div class="block">
+        <div class="block-label"><span id="output-label" data-i18n="out.tray"></span></div>
+        <div id="output-empty" class="output-empty" data-i18n="out.empty"></div>
+        <figure id="output-figure" class="polaroid" hidden>
+          <img id="output-img" alt="" />
+          <figcaption id="output-caption"></figcaption>
+        </figure>
+        <div id="output-thumbs" class="thumbs" hidden></div>
+        <div id="output-actions" class="row" hidden>
+          <button id="save-btn" class="pill" data-i18n="out.save"></button>
+          <button id="share-btn" class="pill" data-i18n="out.share" hidden></button>
+          <a id="open-btn" class="pill" target="_blank" rel="noopener" data-i18n="out.openFull"></a>
+          <button id="report-btn" class="pill" data-i18n="report.btn"></button>
+        </div>
+        <p id="output-hint" class="soft" hidden></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Templates dialog -->
+  <dialog id="templates-dialog">
+    <h2 data-i18n="templates.title"></h2>
+    <input id="template-search" class="text-input" data-i18n-placeholder="templates.search" />
+    <div id="template-grid" class="template-grid"></div>
+    <p id="template-search-empty" class="soft" data-i18n="templates.searchEmpty" hidden></p>
+  </dialog>
+
+  <!-- History dialog -->
+  <dialog id="history-dialog">
+    <h2 data-i18n="history.title"></h2>
+    <p class="soft" data-i18n="history.subtitle"></p>
+    <div id="history-list" class="history-list"></div>
+    <p id="history-empty" class="soft" data-i18n="history.empty" hidden></p>
+    <p id="history-error" class="error" data-i18n="history.failed" hidden></p>
+  </dialog>
+
+  <!-- Account dialog -->
+  <dialog id="account-dialog">
+    <h2 data-i18n="account.title"></h2>
+    <div class="account-head">
+      <img id="account-avatar" alt="" hidden />
+      <div>
+        <strong id="account-name"></strong>
+        <div id="account-email" class="soft"></div>
+      </div>
+    </div>
+    <div class="row">
+      <button id="store-btn" class="pill" data-i18n="store.title"></button>
+      <button id="signout-btn" class="pill" data-i18n="auth.signOut"></button>
+    </div>
+    <div id="redeem-row">
+      <p class="soft" data-i18n="redeem.hint"></p>
+      <div class="row">
+        <input id="redeem-input" class="text-input" data-i18n-placeholder="redeem.placeholder"
+               autocomplete="off" autocapitalize="characters" maxlength="12" />
+        <button id="redeem-btn" class="pill" data-i18n="redeem.apply"></button>
+      </div>
+      <p id="redeem-msg" class="soft" hidden></p>
+    </div>
+    <h3 data-i18n="account.usage"></h3>
+    <div id="txn-list" class="txn-list"></div>
+    <p id="txn-empty" class="soft" data-i18n="account.noUsage" hidden></p>
+    <div class="danger-zone">
+      <button id="delete-account-btn" class="pill danger" data-i18n="account.deleteAccount"></button>
+    </div>
+  </dialog>
+
+  <!-- Store dialog -->
+  <dialog id="store-dialog">
+    <h2 data-i18n="store.title"></h2>
+    <p class="soft"><span data-i18n="store.subtitle"></span> <span id="store-balance"></span></p>
+    <div id="store-products" class="store-products"></div>
+    <p id="store-note" class="store-note" data-i18n="store.webNote"></p>
+    <div class="row">
+      <a id="store-play" class="pill" target="_blank" rel="noopener" data-i18n="store.getPlay"></a>
+      <a id="store-ios" class="pill" target="_blank" rel="noopener" data-i18n="store.getIos" hidden></a>
+    </div>
+  </dialog>
+
+  <!-- Report dialog -->
+  <dialog id="report-dialog">
+    <h2 data-i18n="report.title"></h2>
+    <p class="soft" data-i18n="report.subtitle"></p>
+    <div id="report-reasons" class="report-reasons"></div>
+    <textarea id="report-note" class="text-input" rows="3" data-i18n-placeholder="report.notePlaceholder"></textarea>
+    <p id="report-msg" class="soft" hidden></p>
+    <div class="row">
+      <button id="report-submit" class="pill vermilion" data-i18n="report.submit"></button>
+    </div>
+  </dialog>
+
+  <!-- AI consent dialog -->
+  <dialog id="consent-dialog">
+    <h2 data-i18n="consent.title"></h2>
+    <p data-i18n="consent.body"></p>
+    <p class="soft" data-i18n="consent.pointSend"></p>
+    <p class="soft" data-i18n="consent.pointRights"></p>
+    <p class="soft" data-i18n="consent.pointKeep"></p>
+    <p class="soft" data-i18n="consent.pointReview"></p>
+    <p class="soft" data-i18n="consent.pointDelete"></p>
+    <div class="row">
+      <button id="consent-agree" class="pill vermilion" data-i18n="consent.agree"></button>
+      <button id="consent-decline" class="pill" data-i18n="consent.decline"></button>
+    </div>
+  </dialog>
+
+  <!-- Generic confirm dialog -->
+  <dialog id="confirm-dialog">
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-body" class="soft"></p>
+    <div class="row">
+      <button id="confirm-yes" class="pill danger"></button>
+      <button id="confirm-no" class="pill"></button>
+    </div>
+  </dialog>
+
+</body>
+</html>
