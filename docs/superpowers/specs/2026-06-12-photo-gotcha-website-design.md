@@ -1,7 +1,8 @@
-# Sparkling Will website redesign — Photo Gotcha showcase
+# Sparklingwill website redesign — Photo Gotcha showcase
 
 **Date:** 2026-06-12
-**Status:** Approved by user
+**Status:** Approved by user; body updated 2026-09-01 to match what shipped.
+**Changelog:** see "Changes since approval" at the end.
 
 ## Goal
 
@@ -38,18 +39,21 @@ don't 404.
 
 ## Page structure (single page)
 
-1. **Nav** — "Sparkling Will" wordmark; EN/中文 toggle.
+1. **Nav** — "Sparklingwill" wordmark; EN/中文 toggle.
 2. **Hero** — "Photo Gotcha" title + poetic tagline
    (EN: "Your photos, painted into a moment" · ZH: 「一拍，一世界」 or
-   similar). Centerpiece animation (below). CTA: quiet
-   "Coming soon to Google Play" pill — not a link.
+   similar). Centerpiece animation (below). Two CTA pills: "Try it in your
+   browser", linking to the web client at `/app/`, and a quiet "Coming soon
+   to Google Play" pill that is not a link.
 3. **How it works** — three steps with minimal line icons:
    ① upload 1–2 photos ② pick a template ③ pull the crank → polaroid.
-4. **Template gallery** — six tilted polaroid-framed cards: neon, qipao,
-   vintage, snow, sunset, forest. Caption: "16 styles · 40 city
-   backdrops" (ZH equivalents).
-5. **About** — existing one-line Sparkling Will mission, translated.
-6. **Footer** — © 2026 Sparkling Will.
+4. **Template gallery** — fourteen tilted polaroid-framed cards: polaroid,
+   mystic, academy, vintage, qipao, forest, sunset, snow, neon, paparazzi,
+   camellia, tomato, mohair, casual. Caption: "14 styles to choose from"
+   (ZH equivalents).
+5. **About** — existing one-line Sparklingwill mission, translated.
+6. **Footer** — © 2026 Sparklingwill, plus links: Web app, Privacy Policy,
+   Delete account & data.
 
 ## Hero painting animation (canvas engine)
 
@@ -68,10 +72,16 @@ A `<canvas>` displays the result polaroid being painted, looping:
 
 Implementation: pure vanilla JS, requestAnimationFrame, offscreen canvas
 holding the source pixels for sampling. Target ~150–250 lines, no
-dependencies. Time-budgeted stages so total loop ≈ 10–14s.
+dependencies. Time-budgeted stages, divided by a `SPEED` constant, so the total loop is
+≈10.5s. Dab counts scale with `SPEED` so shortening the stages does not
+thin out the painting. Measured 10467ms on the live site, 2026-09-01.
 
 **Fallbacks:**
-- `prefers-reduced-motion: reduce` → static final polaroid, no loop.
+- `prefers-reduced-motion: reduce` → static final polaroid, no loop. A
+  play/pause control in the polaroid caption lets any visitor stop the loop
+  (WCAG 2.2.2 requires a way to stop motion that runs past 5s) and lets a
+  reduced-motion visitor opt in. The choice persists in `localStorage`
+  (`sw-motion`).
 - Image load failure → static final polaroid (or hide hero canvas
   gracefully if even that fails).
 
@@ -91,14 +101,15 @@ Copy into `public/img/` after resizing/compressing to web size
 (longest edge ≈ 800px for gallery, ≈ 1000px for hero result; target
 ~100–200KB each, JPEG/WebP). Needed files:
 
-- `sample_input_girl`, `sample_input_cat`, `polaroid` (hero)
-- `neon`, `qipao`, `vintage`, `snow`, `sunset`, `forest` (gallery)
+- `input-girl`, `input-cat`, `result-polaroid` (hero)
+- `tpl-{polaroid,mystic,academy,vintage,qipao,forest,sunset,snow,neon,
+  paparazzi,camellia,tomato,mohair,casual}` (gallery, 14 files)
 
 Gallery images use `loading="lazy"`.
 
 ## SEO / meta
 
-- Title: "Photo Gotcha — AI photo moments by Sparkling Will" (or
+- Title: "Photo Gotcha — AI photo moments by Sparklingwill" (or
   similar); description, OG, and Twitter meta rewritten around Photo
   Gotcha; og:image points at the hero result image.
 - Canonical stays `https://sparklingwill.com/`; `robots.txt` and
@@ -115,6 +126,8 @@ Keep the existing Vite vanilla stack. Expected changes:
 - `src/i18n.js` — new: strings + toggle logic.
 - `src/counter.js`, `src/javascript.svg` — deleted.
 - `public/img/` — new compressed assets.
+- `.gitattributes` — added 2026-09-01; normalises line endings, which had
+  been rewriting every file in the repo as CRLF churn.
 
 Deployment unchanged: `vite build` → `dist/` → GitHub Pages
 (`CNAME` = sparklingwill.com; absolute paths + `.nojekyll` conventions
@@ -125,3 +138,27 @@ from the previous deployment fix are preserved).
 - `npm run dev`: visual pass — hero loop, both languages, reduced-motion
   emulation, mobile widths (~375px) and desktop.
 - `npm run build` + preview of `dist/`: assets resolve, meta correct.
+
+## Beyond the original scope
+
+These shipped after this spec was approved and are not part of the redesign
+it describes. Recorded here so a QA pass does not read them as drift.
+
+- **Legal and support pages**, each standalone with its own inline styles:
+  `privacy.html`, `terms.html`, `delete-account.html` (Play Console
+  requirement), `support.html` (App Store listing requires a Support URL).
+- **Web client at `/app/`** — a separate build published into `public/app/`,
+  linked from the hero and footer.
+
+## Changes since approval
+
+| Date | Change |
+|---|---|
+| 2026-06-12 | Same-day build refinements this spec was never updated for: brand set as one word "Sparklingwill" (143ab42); gallery grew from 6 styles to all 14 and the caption dropped the "40 city backdrops" claim (0cc63bf, d4aa71a); slogan set to "Curate the beauty of simplicity" (d784c5e) |
+| 2026-06-15 | Account & data deletion page added (Play Console requirement) |
+| 2026-08-14 | Terms of Use added; privacy + deletion pages updated for iOS |
+| 2026-08-31 | Privacy policy: generation consent, content reports, post-deletion email hash, per-request log and IP address, purchase retention |
+| 2026-08-31 | Support page added; hero loop given a play/pause control and sped up to ≈10.5s |
+| 2026-09-01 | Web client published at `/app/`; `.gitattributes` added |
+
+Open items are tracked in `qa-findings.csv` at the repo root.
