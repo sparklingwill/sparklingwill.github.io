@@ -19,7 +19,9 @@ don't 404.
 
 ## Decisions (user-confirmed)
 
-- **App CTA:** "Coming soon to Google Play" — no download link yet.
+- **App CTA:** "Get it on Google Play", linking to the listing. It read
+  "Coming soon to Google Play" and was not a link until the Android app was
+  published on 2026-09-14.
 - **Demo assets:** use the photo repo's own samples —
   `sample_input_girl.png` + `sample_input_cat.jpeg` as inputs,
   `polaroid.jpeg` as the generated result; template images for a gallery.
@@ -43,8 +45,8 @@ don't 404.
 2. **Hero** — "Photo Gotcha" title + poetic tagline
    (EN: "Your photos, painted into a moment" · ZH: 「一拍，一世界」 or
    similar). Centerpiece animation (below). Two CTA pills: "Try it in your
-   browser", linking to the web client at `/app/`, and a quiet "Coming soon
-   to Google Play" pill that is not a link.
+   browser", linking to the web client at `/app/`, and a quieter "Get it on
+   Google Play" pill linking to the Play listing.
 3. **How it works** — three steps with minimal line icons:
    ① upload 1–2 photos ② pick a template ③ pull the crank → polaroid.
 4. **Template gallery** — fourteen tilted polaroid-framed cards: polaroid,
