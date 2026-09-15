@@ -84,37 +84,159 @@ export const strings = {
     privacy: '隐私政策',
     deleteAccount: '删除账号与数据',
   },
+  es: {
+    heroKicker: 'Sparklingwill presenta',
+    heroTagline: 'Tus fotos, pintadas en un instante.',
+    heroSub: 'Sube una o dos fotos. Nuestra IA estudia sus colores y te devuelve un instante digno de guardar.',
+    heroCta: 'Descárgala en Google Play',
+    heroWebCta: 'Pruébala en tu navegador',
+    footerWebApp: 'Versión web',
+    inputsLabel: 'tus fotos',
+    arrowLabel: 'a partir de sus colores',
+    resultLabel: 'generado por IA',
+    motionPlay: 'Reproducir',
+    motionPause: 'Pausar',
+    howTitle: 'Cómo funciona',
+    step1Title: 'Comparte una foto',
+    step1Body: 'Elige una o dos fotos tuyas — o de quien tú quieras.',
+    step2Title: 'Elige un estilo',
+    step2Body: 'Catorce estilos, de noches de neón a película vintage.',
+    step3Title: 'Gira la manivela',
+    step3Body: 'Sale una polaroid — tu instante, pintado.',
+    galleryTitle: 'Estilos',
+    gallerySub: '14 estilos para elegir',
+    tplPolaroid: 'Polaroid',
+    tplMystic: 'Místico',
+    tplAcademy: 'Academia',
+    tplVintage: 'Vintage',
+    tplQipao: 'Qipao',
+    tplForest: 'Bosque',
+    tplSunset: 'Atardecer',
+    tplSnow: 'Nieve',
+    tplNeon: 'Neón',
+    tplPaparazzi: 'Paparazzi',
+    tplCamellia: 'Camelia',
+    tplTomato: 'Tomate',
+    tplMohair: 'Mohair',
+    tplCasual: 'Casual',
+    aboutTitle: 'Sobre Sparklingwill',
+    aboutBody: 'Cuidar la belleza de lo simple.',
+    footer: '© 2026 Sparklingwill. Todos los derechos reservados.',
+    support: 'Soporte',
+    privacy: 'Política de Privacidad',
+    deleteAccount: 'Eliminar cuenta y datos',
+  },
 };
 
+// The switcher lists every language in its own name, so a reader can find
+// theirs without already reading the current one.
+export const LANGUAGES = [
+  { code: 'en', label: 'English', htmlLang: 'en' },
+  { code: 'zh', label: '中文', htmlLang: 'zh-CN' },
+  { code: 'es', label: 'Español', htmlLang: 'es' },
+];
+
+const STORAGE_KEY = 'sw-lang';
+let current = 'en';
+
+export function currentLang() {
+  return current;
+}
+
 function apply(lang) {
-  const dict = strings[lang];
-  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-  document.body.classList.toggle('lang-zh', lang === 'zh');
+  const meta = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+  current = meta.code;
+  const dict = strings[current];
+  document.documentElement.lang = meta.htmlLang;
+  // Only Chinese needs the CJK face; the Latin serif already covers Spanish.
+  document.body.classList.toggle('lang-zh', current === 'zh');
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const t = dict[el.dataset.i18n];
     if (t) el.textContent = t;
   });
-  const toggle = document.getElementById('lang-toggle');
-  if (toggle) toggle.textContent = lang === 'zh' ? 'EN' : '中文';
+  const label = document.getElementById('lang-current');
+  if (label) label.textContent = meta.label;
+  document.querySelectorAll('#lang-list [data-lang]').forEach((btn) => {
+    btn.setAttribute('aria-checked', String(btn.dataset.lang === current));
+  });
   // Labels whose text depends on runtime state (the paint toggle) can't use
   // data-i18n, so let them relabel themselves.
-  document.dispatchEvent(new CustomEvent('sw:langchange', { detail: { lang } }));
+  document.dispatchEvent(new CustomEvent('sw:langchange', { detail: { lang: current } }));
 }
 
 export function t(key) {
-  const lang = document.documentElement.lang.startsWith('zh') ? 'zh' : 'en';
-  return strings[lang][key];
+  return strings[current][key];
+}
+
+function resolveInitial() {
+  let saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch { /* storage blocked */ }
+  if (LANGUAGES.some((l) => l.code === saved)) return saved;
+  const nav = (navigator.language || '').toLowerCase();
+  return LANGUAGES.find((l) => nav.startsWith(l.code))?.code ?? 'en';
+}
+
+function initMenu() {
+  const button = document.getElementById('lang-button');
+  const list = document.getElementById('lang-list');
+  if (!button || !list) return;
+
+  // Built from LANGUAGES so adding a language is a one-line change here.
+  list.replaceChildren(...LANGUAGES.map((l) => {
+    const li = document.createElement('li');
+    li.setAttribute('role', 'none');
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.setAttribute('role', 'menuitemradio');
+    item.setAttribute('aria-checked', String(l.code === current));
+    item.dataset.lang = l.code;
+    item.textContent = l.label;
+    item.addEventListener('click', () => {
+      try { localStorage.setItem(STORAGE_KEY, l.code); } catch { /* storage blocked */ }
+      apply(l.code);
+      close(true);
+    });
+    li.append(item);
+    return li;
+  }));
+
+  const items = () => [...list.querySelectorAll('[data-lang]')];
+  const isOpen = () => !list.hidden;
+
+  function open() {
+    list.hidden = false;
+    button.setAttribute('aria-expanded', 'true');
+    (items().find((i) => i.dataset.lang === current) ?? items()[0])?.focus();
+  }
+  function close(refocus) {
+    list.hidden = true;
+    button.setAttribute('aria-expanded', 'false');
+    if (refocus) button.focus();
+  }
+
+  button.addEventListener('click', () => (isOpen() ? close(false) : open()));
+
+  // Arrow keys move within the menu, Escape closes it, Tab lets focus leave.
+  list.addEventListener('keydown', (e) => {
+    const all = items();
+    const i = all.indexOf(document.activeElement);
+    if (e.key === 'Escape') { e.preventDefault(); close(true); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); all[(i + 1) % all.length].focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); all[(i - 1 + all.length) % all.length].focus(); }
+    else if (e.key === 'Home') { e.preventDefault(); all[0].focus(); }
+    else if (e.key === 'End') { e.preventDefault(); all[all.length - 1].focus(); }
+    else if (e.key === 'Tab') { close(false); }
+  });
+  button.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', (e) => {
+    if (isOpen() && !list.contains(e.target) && !button.contains(e.target)) close(false);
+  });
 }
 
 export function initI18n() {
-  const saved = localStorage.getItem('sw-lang');
-  const lang = saved === 'en' || saved === 'zh'
-    ? saved
-    : (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en';
-  apply(lang);
-  document.getElementById('lang-toggle')?.addEventListener('click', () => {
-    const next = document.documentElement.lang.startsWith('zh') ? 'en' : 'zh';
-    localStorage.setItem('sw-lang', next);
-    apply(next);
-  });
+  current = resolveInitial();
+  initMenu();
+  apply(current);
 }

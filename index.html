@@ -35,7 +35,14 @@
 <body>
   <nav class="topnav">
     <span class="wordmark">Sparklingwill</span>
-    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch language">中文</button>
+    <div class="lang-menu">
+      <button id="lang-button" class="lang-toggle" type="button" aria-label="Select language"
+        aria-haspopup="true" aria-expanded="false" aria-controls="lang-list">
+        <span id="lang-current">English</span>
+        <span class="lang-caret" aria-hidden="true">&#9662;</span>
+      </button>
+      <ul id="lang-list" class="lang-list" role="menu" aria-labelledby="lang-button" hidden></ul>
+    </div>
   </nav>
 
   <header class="hero">

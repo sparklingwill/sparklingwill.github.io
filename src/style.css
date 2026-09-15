@@ -46,6 +46,9 @@ body {
 }
 
 .lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: inherit;
   font-size: 0.95rem;
   background: none;
@@ -60,6 +63,66 @@ body {
 .lang-toggle:hover {
   background: var(--vermilion);
   color: var(--frame);
+}
+
+/* ---- language menu ---- */
+.lang-menu {
+  position: relative;
+}
+
+.lang-caret {
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.lang-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 20;
+  min-width: 9.5rem;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  background: var(--frame);
+  border: 1px solid var(--vermilion);
+  border-radius: 0.9rem;
+  box-shadow: 0 12px 32px rgba(38, 34, 28, 0.18);
+}
+
+/* The attribute must win over any display set above it. */
+.lang-list[hidden] {
+  display: none;
+}
+
+.lang-list button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0.45rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.lang-list button:hover,
+.lang-list button:focus-visible {
+  background: var(--vermilion);
+  color: var(--frame);
+  outline: none;
+}
+
+.lang-list button[aria-checked="true"]::after {
+  content: '\2713';
+  font-size: 0.85em;
 }
 
 /* ---- hero ---- */
