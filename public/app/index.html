@@ -11,8 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <script type="module" crossorigin src="/app/assets/index-DbBPhMvn.js"></script>
-  <link rel="stylesheet" crossorigin href="/app/assets/index-hmsirJh6.css">
+  <script type="module" crossorigin src="/app/assets/index-DqLY1xt3.js"></script>
+  <link rel="stylesheet" crossorigin href="/app/assets/index-Cml6PxZl.css">
 </head>
 <body>
   <nav class="topnav">
@@ -21,7 +21,14 @@
       <button id="credit-pill" class="pill" hidden>…</button>
       <button id="history-btn" class="pill" data-i18n="history.btn" hidden>History</button>
       <button id="account-btn" class="pill" data-i18n="account.btn" hidden>Account</button>
-      <button id="lang-toggle" class="pill" aria-label="Switch language">中文</button>
+      <div class="lang-menu">
+        <button id="lang-button" class="pill" type="button" aria-label="Select language"
+                aria-haspopup="true" aria-expanded="false" aria-controls="lang-list">
+          <span id="lang-current">English</span>
+          <span class="lang-caret" aria-hidden="true">&#9662;</span>
+        </button>
+        <ul id="lang-list" class="lang-list" role="menu" aria-labelledby="lang-button" hidden></ul>
+      </div>
     </div>
   </nav>
 
