@@ -20,7 +20,7 @@
 // measure its own clicks.
 
 (function () {
-  var TIKTOK_PIXEL_ID = ''; // paste the Pixel ID from TikTok Events Manager
+  var TIKTOK_PIXEL_ID = 'DAM6JHJC77U9OQ6PLQ8G'; // TikTok Events Manager, pixel "sparklingwill.com"
 
   var w = window;
   var ready = Promise.resolve(false);
