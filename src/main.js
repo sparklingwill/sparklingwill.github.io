@@ -1,8 +1,10 @@
 import './style.css';
 import { initI18n, t } from './i18n.js';
 import { startPaintLoop, drawStatic } from './paint-engine.js';
+import { initInstallPrompt } from './install.js';
 
 initI18n();
+initInstallPrompt();
 
 // Reveal sections as they scroll into view.
 const io = new IntersectionObserver((entries) => {

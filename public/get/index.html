@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Photo Gotcha</title>
+  <!-- A routing hop, not a page: keep it out of search results. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://apps.apple.com" />
+  <link rel="preconnect" href="https://play.google.com" />
+
+  <!--
+    One destination URL for ad campaigns: send every click here and the
+    visitor lands in the store their device can actually install from, with
+    the browser left on the homepage.
+
+      /get                  -> App Store on iOS, Play on Android, home otherwise
+      /get?ref=CODE         -> carries the referral code into Play's install referrer
+      /get?ct=spring_launch -> carries a campaign token into App Store analytics
+
+    The detection mirrors src/install.js. It is inlined rather than imported
+    because public/ is copied unbundled, and a redirect should not wait on a
+    module fetch.
+  -->
+  <script>
+    (function () {
+      var APP_STORE = 'https://apps.apple.com/us/app/photo-gotcha/id6801330867';
+      var PLAY = 'https://play.google.com/store/apps/details?id=com.sparklingwill.photogotcha';
+      var HOME = 'https://sparklingwill.com/';
+
+      var ua = (navigator.userAgent || '').toLowerCase();
+      var touch = navigator.maxTouchPoints || 0;
+      var android = /android/.test(ua);
+      // iPadOS 13+ reports a desktop Safari UA; the touch points give it away.
+      var ios = /iphone|ipod|ipad/.test(ua) || (/macintosh/.test(ua) && touch > 1);
+
+      var params = new URLSearchParams(location.search);
+      var url;
+
+      if (android) {
+        url = PLAY;
+        var ref = params.get('ref');
+        if (ref && /^[A-Za-z0-9]{4,16}$/.test(ref)) {
+          url += '&referrer=' + encodeURIComponent('ref=' + ref.toUpperCase());
+        }
+      } else if (ios) {
+        url = APP_STORE;
+        // Apple's campaign parameters, forwarded only when supplied.
+        var apple = new URLSearchParams();
+        ['pt', 'ct', 'mt'].forEach(function (k) {
+          var v = params.get(k);
+          if (v) apple.set(k, v);
+        });
+        var q = apple.toString();
+        if (q) url += '?' + q;
+      } else {
+        url = HOME;
+      }
+
+      // replace, not assign: Back should return where the ad came from, not
+      // bounce through this page again.
+      location.replace(url);
+    })();
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem 1.2rem;
+      text-align: center;
+      background: #f6f1e7;
+      color: #26221c;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+      color: #6f6557;
+    }
+
+    a {
+      display: inline-block;
+      border: 1px solid #b8432e;
+      color: #b8432e;
+      border-radius: 999px;
+      padding: 0.5rem 1.4rem;
+      text-decoration: none;
+    }
+
+    .links {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Seen only if the redirect cannot run: no JavaScript, or it was slow. -->
+  <h1>Photo Gotcha</h1>
+  <p>Taking you to the store&hellip;</p>
+  <div class="links">
+    <a href="https://apps.apple.com/us/app/photo-gotcha/id6801330867">App Store</a>
+    <a href="https://play.google.com/store/apps/details?id=com.sparklingwill.photogotcha">Google Play</a>
+    <a href="https://sparklingwill.com/">sparklingwill.com</a>
+  </div>
+</body>
+
+</html>
