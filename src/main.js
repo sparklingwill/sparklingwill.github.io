@@ -6,6 +6,19 @@ import { initInstallPrompt } from './install.js';
 initI18n();
 initInstallPrompt();
 
+// Report store and "try in browser" clicks to the ad pixel (see
+// public/pixel.js). Delegated, so the install bar's link counts too.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a[href]');
+  if (!a || typeof window.swTrack !== 'function') return;
+  const href = a.getAttribute('href') || '';
+  let name = null;
+  if (href.includes('apps.apple.com')) name = 'app_store';
+  else if (href.includes('play.google.com')) name = 'google_play';
+  else if (href.startsWith('/app')) name = 'web_app';
+  if (name) window.swTrack('ClickButton', { content_name: name });
+});
+
 // Reveal sections as they scroll into view.
 const io = new IntersectionObserver((entries) => {
   for (const e of entries) {

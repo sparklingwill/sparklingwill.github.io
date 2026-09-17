@@ -9,6 +9,8 @@
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://apps.apple.com" />
   <link rel="preconnect" href="https://play.google.com" />
+  <!-- Ad measurement; a no-op until a pixel id is set in /pixel.js. -->
+  <script src="/pixel.js"></script>
 
   <!--
     One destination URL for ad campaigns: send every click here and the
@@ -58,9 +60,18 @@
         url = HOME;
       }
 
-      // replace, not assign: Back should return where the ad came from, not
-      // bounce through this page again.
-      location.replace(url);
+      // Tell the ad pixel which store this click was routed to, and give the
+      // pixel script a moment (capped) to load and send it. With no pixel id
+      // configured swPixelReady resolves at once and the hop is instant.
+      var platform = android ? 'google_play' : ios ? 'app_store' : 'home';
+      if (typeof swTrack === 'function') swTrack('ViewContent', { content_name: platform });
+      var go = function () {
+        // replace, not assign: Back should return where the ad came from, not
+        // bounce through this page again.
+        location.replace(url);
+      };
+      if (typeof swPixelReady === 'function') swPixelReady(800).then(go, go);
+      else go();
     })();
   </script>
 
