@@ -76,12 +76,28 @@
     ttq.page();
   }
 
+  // TikTok's event diagnostics want every event to carry a `contents` array
+  // whose items have a non-empty content_id (it flags "Content ID is missing"
+  // otherwise). Callers pass a short content_name such as "google_play"; this
+  // turns it into the shape TikTok expects so no page has to know the schema.
+  function withContents(params) {
+    var p = {};
+    for (var k in params) p[k] = params[k];
+    var id = p.content_id || p.content_name;
+    if (id && !p.contents) {
+      p.content_id = String(id);
+      p.content_type = p.content_type || 'product';
+      p.contents = [{ content_id: p.content_id, content_name: p.content_name || p.content_id, content_type: p.content_type }];
+    }
+    return p;
+  }
+
   /** Report an event; safe to call whether or not the pixel is loaded. */
   w.swTrack = function (event, params) {
     if (!enabled) return;
     try {
       if (likelyEU()) w.ttq.grantConsent(); // an explicit click on a store button
-      w.ttq.track(event, params || {});
+      w.ttq.track(event, withContents(params || {}));
     } catch (e) { /* measurement must never break a page */ }
   };
 
